@@ -358,13 +358,6 @@ function getFileNameFromURL(url, defaultFileName)
     return result.length > 0 ? result : defaultFileName;
 }
 
-function getScriptNameFromHost()
-{
-    var name = WScript.ScriptName;
-    var dotIndex = name.lastIndexOf('.');
-    return dotIndex >= 0 ? name = name.substring(0, dotIndex) : name;
-}
-
 function test() {}
     </script>
 </job>
