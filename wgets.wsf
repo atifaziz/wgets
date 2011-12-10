@@ -90,10 +90,6 @@ var Mask =
     nullString : function(s) 
     {
         return s == null ? "" : s;
-    },
-    emptyString : function (s, mask)
-    {
-        return s == null || s.length == 0 ? mask : s;
     }
 };
 
@@ -183,11 +179,6 @@ var HTTP =
 
 // String (extensions)
 
-String.prototype.mask = function(mask)
-{
-    return Mask.emptyString(this, mask);
-}
-
 String.prototype.trim = function()
 {
     return this.replace(/^[\s]+/, "").replace(/[\s]+$/, "");
@@ -195,12 +186,10 @@ String.prototype.trim = function()
 
 String.prototype.clipLeft = function(width, decoration)
 {
-    decoration = Mask.emptyString(decoration, "...");
-    
     if (this.length <= width)
         return this;
     
-    return decoration + this.slice(-width);
+    return (decoration || "...") + this.slice(-width);
 }
 
 // Exception
@@ -212,7 +201,7 @@ function Exception(message)
 
 Exception.prototype.init = function(message)
 {
-    this.message = Mask.emptyString(message, "A general error has occurred.");
+    this.message = message || "A general error has occurred.";
     this.stackTrace = Diagnostics.stackTrace();
 }
 
@@ -229,7 +218,7 @@ ProgramArgumentException.base = Exception.prototype;
 
 function ProgramArgumentException(message) 
 {
-    message = Mask.emptyString(message, "Error with program argument.") + 
+    message = (message || "Error with program argument.") +
         " Use the /? for help.";
         
     ProgramArgumentException.base.init.call(this, message);
