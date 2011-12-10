@@ -5,13 +5,14 @@
 Copyright (c) Atif Aziz. All rights reserved.
 Written by Atif Aziz, http://www.raboof.com/
 
-Creative Commons Attribution-ShareAlike 3.0 Unported License.  
+Creative Commons Attribution-ShareAlike 3.0 Unported License.
   http://creativecommons.org/licenses/by-sa/3.0/
 </description>
         <named name="od" helpstring="Output directory." type="string" required="false" />
         <named name="status" helpstring="Report status only." type="simple" required="false" />
         <named name="headers" helpstring="Report headers only." type="simple" required="false" />
         <named name="test" helpstring="Runs internal tests." type="simple" required="false" />
+        <named name="logo" helpstring="Information about this script." type="simple" required="false" />
         <unnamed name="URL" helpstring="URL of the resource to retrieve" type="string" required="true" />
         <unnamed name="LOCALFILE" helpstring="Path to local file where to save the resource." type="string" required="true" />
         <example>
@@ -28,11 +29,43 @@ var stderr = WScript.StdErr;
 
 var About =
 {
-    name : "WGETS",
-    version : "1.0",
+    name         : "WGETS",
+    version      : "1.1",
     majorVersion : 1,
-    minorVersion : 0,
-    description : "A non-interactive web retriever script."
+    minorVersion : 1,
+    copyright    : "Copyright (c) Atif Aziz. All rights reserved.",
+    authors      : [
+        { name: "Atif Aziz", href: "http://www.raboof.com/" }
+    ],
+    description  : "A non-interactive web retriever script.",
+    license      : {
+        title: "Creative Commons Attribution-ShareAlike 3.0 Unported License.",
+        href : "http://creativecommons.org/licenses/by-sa/3.0/"
+    },
+    write : function(writeln)
+    {
+        writeln(this.name + ' ' + this.version + ' - ' + this.description);
+        writeln(this.copyright);
+        writeln();
+        if (this.authors.length)
+        {
+            var author = function() { return this.name + ', ' + this.href; };
+            if (this.authors.length > 1)
+            {
+                writeln('Written by:');
+                for (var i = 0; i < this.authors.length; i++)
+                    writeln('- ' + author.apply(this.authors[i]));
+            }
+            else
+            {
+                writeln('Written by ' + author.apply(this.authors[0]));
+            }
+            writeln();
+        }
+        writeln(this.license.title);
+        writeln(' ' + this.license.href);
+        writeln();
+    }
 }
 
 //
@@ -248,21 +281,20 @@ function ProgramArgumentException(message)
 
 try
 {
+    var wshargs = WScript.Arguments;
     var args = [];
-    for (var i = 0; i < WScript.Arguments.length; i++)
-        args.push(WScript.Arguments(i));
+    for (var i = 0; i < wshargs.length; i++)
+        args.push(wshargs(i));
         
     args.unnamed = [];
 
-    for (var i = 0; i < WScript.Arguments.Unnamed.Count; i++)
-        args.unnamed.push(WScript.Arguments.Unnamed.Item(i));
-        
-    args.getNamed = function(name)
-    {
-        return WScript.Arguments.Named.Item(name);
-    }
-    
-    if (args.getNamed("test"))
+    for (var i = 0; i < wshargs.Unnamed.Count; i++)
+        args.unnamed.push(wshargs.Unnamed.Item(i));
+
+    args.getNamed  = function(name) { return WScript.Arguments.Named.Item(name); }
+    args.isFlagged = function(name) { return WScript.Arguments.Named.Exists(name); }
+
+    if (args.isFlagged("test"))
         test();
     else          
         main(args);
@@ -275,15 +307,22 @@ catch (e)
 
 function main(args)
 {
+    var logo = args.isFlagged('logo');
+    if (logo)
+        About.write(function(s) { stderr.WriteLine(s); });
+
     if (args.unnamed.length == 0)
+    {
+        if (logo) return;
         throw new ProgramArgumentException("Missing URL.");
+    }
     
     var url = args.unnamed[0];
 
     var outputFileName
     var useStandardOutput = false;
-    var httpStatusOnly = args.getNamed("status");
-    var httpHeadersOnly = args.getNamed("headers");
+    var httpStatusOnly = args.isFlagged("status");
+    var httpHeadersOnly = args.isFlagged("headers");
     var dontOutputEntity = httpStatusOnly || httpHeadersOnly;
 
     if (!dontOutputEntity)
@@ -303,14 +342,14 @@ function main(args)
     }
     
     var http = new ActiveXObject("Microsoft.XMLHTTP");
-    http.open("GET", url, false);
+    http.open(dontOutputEntity ? "HEAD" : "GET", url, false);
     http.send();
     
     var httpStatus = http.status + " " + http.statusText;
 
     if (httpStatusOnly)
-        writeln(httpStatus + " # " + url);
-    else if (httpHeadersOnly)
+        writeln(httpStatus);
+    if (httpHeadersOnly)
         write(http.getAllResponseHeaders());
 
     if (dontOutputEntity)
