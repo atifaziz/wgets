@@ -94,10 +94,6 @@ var Mask =
     emptyString : function (s, mask)
     {
         return s == null || s.length == 0 ? mask : s;
-    },
-    nullObject : function(o, mask)
-    {
-        return o == null ? mask : o;
     }
 };
 
@@ -318,7 +314,7 @@ function main(args)
         return;
 
     var headers = HTTP.getResponseHeaders(http);
-    var contentLength = parseInt(Mask.nullObject(headers["content-length"], -1));
+    var contentLength = parseInt(headers["content-length"] || -1);
     
     var outputDirectory = Mask.nullString(args.getNamed("od"));
     var outputPath = outputDirectory.length > 0 ?
