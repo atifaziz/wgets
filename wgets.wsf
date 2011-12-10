@@ -19,10 +19,6 @@ Creative Commons Attribution-ShareAlike 3.0 Unported License.
 Example: wgets http://www.example.com/ -</example>
     </runtime>
     <script language="JavaScript">
-//
-// Global variables
-//
-
 var stdin  = WScript.StdIn;
 var stdout = WScript.StdOut;
 var stderr = WScript.StdErr;
@@ -68,18 +64,12 @@ var About =
     }
 }
 
-//
-// Global functions
-//
-
 function writeln(s) { stdout.WriteLine(s); }
 function write(s)   { stdout.Write(s); }
 function alert(s)   { echo(s); }
 function echo(s)    { WScript.Echo(s); }
 
-//
-// ADO Constants
-//
+// Modules
 
 var ADO = 
 {
@@ -94,10 +84,6 @@ var ADO =
         adTypeText : 2
     }
 };
-
-//
-// Mask
-//
 
 var Mask = 
 {
@@ -115,10 +101,6 @@ var Mask =
     }
 };
 
-//
-// Path
-//
-
 var Path =
 {
     combine : function(path1, path2)
@@ -135,10 +117,6 @@ var Path =
     }
 };
 
-//
-// Test
-//
-
 var Test =
 {
     assertEquals : function(expected, actual, message)
@@ -148,10 +126,6 @@ var Test =
     }
 };
 
-//
-// Reflection
-//
-
 var Reflection =
 {
     getFunctionName : function(f) 
@@ -160,10 +134,6 @@ var Reflection =
         return match == null ? "(anonymous)" : match[1];
     }
 };
-
-//
-// Diagnostics
-//
 
 var Diagnostics =
 {
@@ -194,10 +164,6 @@ var Diagnostics =
     }
 };
 
-//
-// HTTP
-//
-
 var HTTP = 
 {
     getResponseHeaders : function(http)
@@ -219,9 +185,7 @@ var HTTP =
     }
 };
 
-//
 // String (extensions)
-//
 
 String.prototype.mask = function(mask)
 {
@@ -243,9 +207,7 @@ String.prototype.clipLeft = function(width, decoration)
     return decoration + this.slice(-width);
 }
 
-//
 // Exception
-//
 
 function Exception(message)
 {
@@ -263,9 +225,7 @@ Exception.prototype.toString = function()
     return this.message;
 }
 
-//
 // ProgramArgumentException extends Exception
-//
 
 ProgramArgumentException.prototype = new Exception();
 ProgramArgumentException.prototype.constructor = ProgramArgumentException;
@@ -278,6 +238,8 @@ function ProgramArgumentException(message)
         
     ProgramArgumentException.base.init.call(this, message);
 }
+
+// Bootstrapper
 
 try
 {
