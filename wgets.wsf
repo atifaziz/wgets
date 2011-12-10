@@ -85,20 +85,12 @@ var ADO =
     }
 };
 
-var Mask = 
-{
-    nullString : function(s) 
-    {
-        return s == null ? "" : s;
-    }
-};
-
 var Path =
 {
     combine : function(path1, path2)
     {
-        path1 = Mask.nullString(path1);
-        path2 = Mask.nullString(path2);
+        path1 = path1 || "";
+        path2 = path2 || "";
         
         var sb = [];
         sb.push(path1);
@@ -114,7 +106,7 @@ var Test =
     assertEquals : function(expected, actual, message)
     {
         if (actual != expected)
-            throw new Exception("Equality assertion test failed. " + Mask.nullString(message));
+            throw new Exception("Equality assertion test failed. " + (message || ""));
     }
 };
 
@@ -305,7 +297,7 @@ function main(args)
     var headers = HTTP.getResponseHeaders(http);
     var contentLength = parseInt(headers["content-length"] || -1);
     
-    var outputDirectory = Mask.nullString(args.getNamed("od"));
+    var outputDirectory = args.getNamed("od") || "";
     var outputPath = outputDirectory.length > 0 ?
         Path.combine(outputDirectory, outputFileName) : outputFileName;
         
