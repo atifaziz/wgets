@@ -71,14 +71,14 @@ function echo(s)    { WScript.Echo(s); }
 
 // Modules
 
-var ADO = 
+var ADO =
 {
-    SaveOptionsEnum : 
+    SaveOptionsEnum :
     {
         adSaveCreateNotExist : 1,
         adSaveCreateOverWrite : 2
     },
-    StreamTypeEnum : 
+    StreamTypeEnum :
     {
         adTypeBinary : 1,
         adTypeText : 2
@@ -91,7 +91,7 @@ var Path =
     {
         path1 = path1 || "";
         path2 = path2 || "";
-        
+
         var sb = [];
         sb.push(path1);
         if (path1.slice(-1) != "\\")
@@ -112,7 +112,7 @@ var Test =
 
 var Reflection =
 {
-    getFunctionName : function(f) 
+    getFunctionName : function(f)
     {
         var match = f.toString().match(/function\s+(\w*)/);
         return match == null ? "(anonymous)" : match[1];
@@ -129,42 +129,42 @@ var Diagnostics =
     {
         this.trace("I am here!");
     },
-    stackTrace : function() 
+    stackTrace : function()
     {
         var trace = "";
-        
+
         for (var aCaller = arguments.caller; aCaller != null; aCaller = aCaller.caller)
         {
             trace += "-> " + Reflection.getFunctionName(aCaller.callee) + "\n";
 
-            if (aCaller.caller == aCaller) 
+            if (aCaller.caller == aCaller)
             {
-                trace += "*"; 
+                trace += "*";
                 break;
             }
         }
-        
+
         return trace;
     }
 };
 
-var HTTP = 
+var HTTP =
 {
     getResponseHeaders : function(http)
     {
         var headersText = http.getAllResponseHeaders();
-        
+
         var parser = /^([^\:\r]+)\:\s*(.+)$/gm;
         var match;
         var headers = {};
-        
+
         while ((match = parser.exec(headersText)) != null)
         {
             var name = match[1].trim().toLowerCase();
             var value = match[2].trim();
             headers[name] = value;
         }
-        
+
         return headers;
     }
 };
@@ -180,7 +180,7 @@ String.prototype.clipLeft = function(width, decoration)
 {
     if (this.length <= width)
         return this;
-    
+
     return (decoration || "...") + this.slice(-width);
 }
 
@@ -208,11 +208,11 @@ ProgramArgumentException.prototype = new Exception();
 ProgramArgumentException.prototype.constructor = ProgramArgumentException;
 ProgramArgumentException.base = Exception.prototype;
 
-function ProgramArgumentException(message) 
+function ProgramArgumentException(message)
 {
     message = (message || "Error with program argument.") +
         " Use the /? for help.";
-        
+
     ProgramArgumentException.base.init.call(this, message);
 }
 
@@ -224,7 +224,7 @@ try
     var args = [];
     for (var i = 0; i < wshargs.length; i++)
         args.push(wshargs(i));
-        
+
     args.unnamed = [];
 
     for (var i = 0; i < wshargs.Unnamed.Count; i++)
@@ -235,7 +235,7 @@ try
 
     if (args.isFlagged("test"))
         test();
-    else          
+    else
         main(args);
 }
 catch (e)
@@ -255,7 +255,7 @@ function main(args)
         if (logo) return;
         throw new ProgramArgumentException("Missing URL.");
     }
-    
+
     var url = args.unnamed[0];
 
     var outputFileName
@@ -274,16 +274,16 @@ function main(args)
         else
         {
             outputFileName = getFileNameFromURL(url, "");
-            
+
             if (outputFileName.length == 0)
                 throw new Exception("Unable to guess the output file name from the URL.");
         }
     }
-    
+
     var http = new ActiveXObject("Microsoft.XMLHTTP");
     http.open(dontOutputEntity ? "HEAD" : "GET", url, false);
     http.send();
-    
+
     var httpStatus = http.status + " " + http.statusText;
 
     if (httpStatusOnly)
@@ -296,11 +296,11 @@ function main(args)
 
     var headers = HTTP.getResponseHeaders(http);
     var contentLength = parseInt(headers["content-length"] || -1);
-    
+
     var outputDirectory = args.getNamed("od") || "";
     var outputPath = outputDirectory.length > 0 ?
         Path.combine(outputDirectory, outputFileName) : outputFileName;
-        
+
     if (http.status != 200)
         throw new Exception(httpStatus);
 
@@ -309,13 +309,13 @@ function main(args)
         write(http.responseText);
     }
     else
-    {        
+    {
         var stream = new ActiveXObject("ADODB.Stream");
         stream.Type = ADO.StreamTypeEnum.adTypeBinary;
         stream.Open();
         stream.Write(http.responseBody);
         stream.SaveToFile(outputPath, ADO.SaveOptionsEnum.adSaveCreateOverWrite);
-        
+
         write("Saved " + url.clipLeft(30) + " to " + outputPath);
         if (contentLength >= 0)
             write(" [" + contentLength + " byte(s)]");
@@ -328,7 +328,7 @@ function getFileNameFromURL(url, defaultFileName)
     var qIndex = url.indexOf('?');
 
     var path = qIndex >= 0 ? url.substring(0, qIndex) : url;
-        
+
     var lastSlashIndex = path.lastIndexOf('/');
     var result = path.substring(lastSlashIndex + 1);
 
