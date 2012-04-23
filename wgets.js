@@ -184,7 +184,7 @@ main = function(args) {
   method = dontOutputEntity ? 'HEAD' : 'GET';
   http.open(method, url, false);
   http.send();
-  httpStatus = http.status + ' ' + http.statusText;
+  httpStatus = "" + http.status + " " + http.statusText;
   if (httpStatusOnly) {
     writeln(httpStatus);
   }

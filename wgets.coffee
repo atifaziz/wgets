@@ -108,7 +108,7 @@ main = (args) ->
     http.open(method, url, false)
     http.send()
 
-    httpStatus = http.status + ' ' + http.statusText
+    httpStatus = "#{http.status} #{http.statusText}"
 
     writeln(httpStatus) if httpStatusOnly
     write(http.getAllResponseHeaders()) if httpHeadersOnly
