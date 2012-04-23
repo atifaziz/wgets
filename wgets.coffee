@@ -27,8 +27,8 @@ About =
         writeln(" #{@license.href}")
         writeln()
 
-writeln = (s) -> stdout.WriteLine(s)
-write   = (s) -> stdout.Write(s)
+writeln = (s, w = stdout) -> w.WriteLine(s)
+write   = (s, w = stdout) -> w.Write(s)
 echo    = (s) -> WScript.Echo(s)
 alert   = echo
 
@@ -76,7 +76,7 @@ getFileNameFromURL = (url, defaultFileName) ->
 
 main = (args) ->
     logo = args.isFlagged('logo')
-    About.write((s) -> stderr.WriteLine(s)) if logo
+    About.write((s) -> writeln(s, stderr)) if logo
 
     if args.unnamed.length is 0
         if logo
@@ -140,5 +140,5 @@ try
     args.isFlagged = (name) -> WScript.Arguments.Named.Exists(name)
     main(args)
 catch e
-    stderr.WriteLine(if not e.message then e.toString() else e.message)
+    writeln(if not e.message then e.toString() else e.message, stderr)
     WScript.Quit(-1)

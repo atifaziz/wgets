@@ -48,12 +48,18 @@ About = {
   }
 };
 
-writeln = function(s) {
-  return stdout.WriteLine(s);
+writeln = function(s, w) {
+  if (w == null) {
+    w = stdout;
+  }
+  return w.WriteLine(s);
 };
 
-write = function(s) {
-  return stdout.Write(s);
+write = function(s, w) {
+  if (w == null) {
+    w = stdout;
+  }
+  return w.Write(s);
 };
 
 echo = function(s) {
