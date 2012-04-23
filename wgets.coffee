@@ -50,25 +50,6 @@ Path =
         sb.push(if path2.indexOf('\\') is 0 then path2.substring(1) else path2)
         sb.join('')
 
-Reflection =
-    getFunctionName: (f) ->
-        match = f.toString().match(/function\s+(\w*)/)
-        if match then match[1] else '(anonymous)'
-
-Diagnostics =
-    trace: (s) -> echo("TRACE: #{s}")
-    here: () -> @trace('I am here!')
-    stackTrace: () ->
-        trace = []
-        aCaller = arguments.caller
-        while aCaller
-            trace.push('-> ' + Reflection.getFunctionName(aCaller.callee))
-            if (aCaller.caller is aCaller)
-                trace.push('*');
-                break
-            aCaller = aCaller.caller
-        trace.join('\n')
-
 HTTP =
     getResponseHeaders : (http) ->
         headersText = http.getAllResponseHeaders()
@@ -86,16 +67,9 @@ String::trim = () -> @replace(/^\s+|\s+$/g, '')
 String::clipLeft = (width, decoration = '...') ->
     if @length <= width then @ else decoration + @[-width...]
 
-# Exception
-
-class Exception
-    constructor: (@message = 'A general error has occurred.') ->
-        @stackTrace = Diagnostics.stackTrace()
-    toString: () -> @message
-
-class ProgramArgumentException extends Exception
-    constructor: (message = 'Error with program argument.') ->
-        super message + ' Use the /? for help.'
+class ProgramArgumentError extends Error
+    constructor: (@message = 'Error with program argument.') ->
+        super (@message += ' Use the /? for help.')
 
 getFileNameFromURL = (url, defaultFileName) ->
     qIndex = url.indexOf('?')
@@ -112,7 +86,7 @@ main = (args) ->
         if logo
             return null
         else
-            throw new ProgramArgumentException("Missing URL.")
+            throw new ProgramArgumentError('Missing URL.')
 
     url = args.unnamed[0]
 
@@ -127,7 +101,7 @@ main = (args) ->
             useStandardOutput = outputFileName is '-'
         else
             outputFileName = getFileNameFromURL(url, '')
-            throw new Exception("Unable to guess the output file name from the URL.") if outputFileName.length is 0
+            throw new Error('Unable to guess the output file name from the URL.') if outputFileName.length is 0
 
     http = new ActiveXObject('Microsoft.XMLHTTP')
     method = if dontOutputEntity then 'HEAD' else 'GET'
