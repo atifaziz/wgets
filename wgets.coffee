@@ -2,9 +2,7 @@
 
 About =
     name        : 'WGETS'
-    version     : '1.1'
-    majorVersion: 1
-    minorVersion: 1
+    version     : '1.2'
     copyright   : 'Copyright (c) Atif Aziz. All rights reserved.'
     authors     : [ name: 'Atif Aziz', href: 'http://www.raboof.com/' ]
     description : 'A non-interactive web retriever script.'

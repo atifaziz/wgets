@@ -7,9 +7,7 @@ _ref = [WScript.StdIn, WScript.StdOut, WScript.StdErr], stdin = _ref[0], stdout 
 
 About = {
   name: 'WGETS',
-  version: '1.1',
-  majorVersion: 1,
-  minorVersion: 1,
+  version: '1.2',
   copyright: 'Copyright (c) Atif Aziz. All rights reserved.',
   authors: [
     {
