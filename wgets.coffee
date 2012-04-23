@@ -84,7 +84,7 @@ main = (args) ->
 
     if args.unnamed.length is 0
         if logo
-            return null
+            return
         else
             throw new ProgramArgumentError('Missing URL.')
 

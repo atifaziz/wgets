@@ -159,7 +159,7 @@ main = function(args) {
   }
   if (args.unnamed.length === 0) {
     if (logo) {
-      return null;
+      return;
     } else {
       throw new ProgramArgumentError('Missing URL.');
     }
