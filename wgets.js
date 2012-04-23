@@ -150,7 +150,7 @@ getFileNameFromURL = function(url, defaultFileName) {
 };
 
 main = function(args) {
-  var contentLength, dontOutputEntity, headers, http, httpHeadersOnly, httpStatus, httpStatusOnly, logo, method, outputDirectory, outputFileName, outputPath, stream, url, useStandardOutput;
+  var contentLength, dontOutputEntity, headers, http, httpHeadersOnly, httpStatus, httpStatusOnly, logo, method, outputDirectory, outputFileName, outputPath, stream, url, useStandardOutput, _ref1;
   logo = args.isFlagged('logo');
   if (logo) {
     About.write(function(s) {
@@ -198,7 +198,7 @@ main = function(args) {
   contentLength = parseInt(!headers['content-length'] ? -1 : void 0);
   outputDirectory = args.getNamed('od') || '';
   outputPath = outputDirectory.length > 0 ? Path.combine(outputDirectory, outputFileName) : outputFileName;
-  if (http.status !== 200) {
+  if (!((200 <= (_ref1 = http.status) && _ref1 < 300))) {
     throw new Error(httpStatus);
   }
   if (useStandardOutput) {

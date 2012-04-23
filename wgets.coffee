@@ -122,7 +122,7 @@ main = (args) ->
     outputDirectory = args.getNamed('od') or ''
     outputPath = if outputDirectory.length > 0 then Path.combine(outputDirectory, outputFileName) else outputFileName
 
-    throw new Error(httpStatus) unless http.status is 200
+    throw new Error(httpStatus) unless 200 <= http.status < 300
 
     if useStandardOutput
         write(http.responseText)
