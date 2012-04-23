@@ -166,9 +166,8 @@ main = function(args) {
   if (args.unnamed.length === 0) {
     if (logo) {
       return;
-    } else {
-      throw new ProgramArgumentError('Missing URL.');
     }
+    throw new ProgramArgumentError('Missing URL.');
   }
   url = args.unnamed[0];
   useStandardOutput = false;

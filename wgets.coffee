@@ -79,10 +79,8 @@ main = (args) ->
     About.write((s) -> writeln(s, stderr)) if logo
 
     if args.unnamed.length is 0
-        if logo
-            return
-        else
-            throw new ProgramArgumentError('Missing URL.')
+        return if logo
+        throw new ProgramArgumentError('Missing URL.')
 
     url = args.unnamed[0]
 
@@ -109,8 +107,7 @@ main = (args) ->
     writeln(httpStatus) if httpStatusOnly
     write(http.getAllResponseHeaders()) if httpHeadersOnly
 
-    if dontOutputEntity
-        return
+    return if dontOutputEntity
 
     headers = HTTP.getResponseHeaders(http)
     contentLength = parseInt(-1 unless headers['content-length'])
