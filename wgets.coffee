@@ -91,8 +91,7 @@ main = (args) ->
 
     return if dontOutputEntity
 
-    headers = HTTP.getResponseHeaders(http)
-    contentLength = parseInt(-1 unless headers['content-length'])
+    contentLength = parseInt(String(http.getResponseHeader('Content-Length')))
 
     outputDirectory = args.getNamed('od') or ''
     outputPath = if outputDirectory.length > 0 then Path.combine(outputDirectory, outputFileName) else outputFileName
