@@ -11,7 +11,6 @@ Creative Commons Attribution-ShareAlike 3.0 Unported License.
         <named name="od" helpstring="Output directory." type="string" required="false" />
         <named name="status" helpstring="Report status only." type="simple" required="false" />
         <named name="headers" helpstring="Report headers only." type="simple" required="false" />
-        <named name="test" helpstring="Runs internal tests." type="simple" required="false" />
         <named name="logo" helpstring="Information about this script." type="simple" required="false" />
         <unnamed name="URL" helpstring="URL of the resource to retrieve" type="string" required="true" />
         <unnamed name="LOCALFILE" helpstring="Path to local file where to save the resource." type="string" required="true" />

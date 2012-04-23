@@ -50,10 +50,6 @@ Path =
         sb.push(if path2.indexOf('\\') is 0 then path2.substring(1) else path2)
         sb.join('')
 
-Test =
-    assertEquals: (expected, actual, message) ->
-        throw new Exception("Equality assertion test failed. #{message}") unless actual is expected
-
 Reflection =
     getFunctionName: (f) ->
         match = f.toString().match(/function\s+(\w*)/)
@@ -166,8 +162,6 @@ main = (args) ->
         write(" [#{contentLength} byte(s)]") if contentLength >= 0
         writeln('.')
 
-test = () -> null
-
 # Bootstrapper
 
 try
@@ -176,10 +170,7 @@ try
     args.unnamed = (wshargs.Unnamed.Item(i) for i in [0...wshargs.Unnamed.Count])
     args.getNamed  = (name) -> WScript.Arguments.Named.Item(name)
     args.isFlagged = (name) -> WScript.Arguments.Named.Exists(name)
-    if args.isFlagged('test')
-        test()
-    else
-        main(args)
+    main(args)
 catch e
     stderr.WriteLine(if not e.message then e.toString() else e.message)
     WScript.Quit(-1)
