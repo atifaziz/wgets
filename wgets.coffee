@@ -140,5 +140,5 @@ try
     args.isFlagged = (name) -> WScript.Arguments.Named.Exists(name)
     main(args)
 catch e
-    writeln(if not e.message then e.toString() else e.message, stderr)
+    writeln (if not e.message then e.toString() else e.message), stderr
     WScript.Quit(-1)

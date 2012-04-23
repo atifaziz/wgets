@@ -160,7 +160,7 @@ main = function(args) {
   logo = args.isFlagged('logo');
   if (logo) {
     About.write(function(s) {
-      return stderr.WriteLine(s);
+      return writeln(s, stderr);
     });
   }
   if (args.unnamed.length === 0) {
@@ -250,6 +250,6 @@ try {
   };
   main(args);
 } catch (e) {
-  stderr.WriteLine(!e.message ? e.toString() : e.message);
+  writeln((!e.message ? e.toString() : e.message), stderr);
   WScript.Quit(-1);
 }
