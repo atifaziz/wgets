@@ -32,8 +32,6 @@ write   = (s) -> stdout.Write(s)
 echo    = (s) -> WScript.Echo(s)
 alert   = echo
 
-# Modules
-
 ADO =
     SaveOptionsEnum:
         adSaveCreateNotExist : 1
@@ -59,8 +57,6 @@ HTTP =
             [name, value] = [match[1].trim().toLowerCase(), match[2].trim()]
             headers[name] = value
         headers
-
-# String (extensions)
 
 String::trim = () -> @replace(/^\s+|\s+$/g, '')
 
@@ -135,8 +131,6 @@ main = (args) ->
         write("Saved " + url.clipLeft(30) + " to #{outputPath}")
         write(" [#{contentLength} byte(s)]") if contentLength >= 0
         writeln('.')
-
-# Bootstrapper
 
 try
     wshargs = WScript.Arguments
