@@ -1,29 +1,13 @@
-[stdin, stdout, stderr]  = [WScript.StdIn, WScript.StdOut, WScript.StdErr]
+about = """
+    WGETS 1.2  - A non-interactive web retriever script.
+    Copyright (c) Atif Aziz. All rights reserved.
 
-About =
-    name        : 'WGETS'
-    version     : '1.2'
-    copyright   : 'Copyright (c) Atif Aziz. All rights reserved.'
-    authors     : [ name: 'Atif Aziz', href: 'http://www.raboof.com/' ]
-    description : 'A non-interactive web retriever script.'
-    license     :
-        title: 'Creative Commons Attribution-ShareAlike 3.0 Unported License.'
-        href : 'http://creativecommons.org/licenses/by-sa/3.0/'
-    write : (writeln) ->
-        writeln("#{@name} #{@version}  - #{@description}")
-        writeln(@copyright)
-        writeln()
-        if @authors.length
-            author = () -> "#{@name}, #{@href}"
-            if @authors.length > 1
-                writeln('Written by:')
-                writeln('- ' + author.apply(a)) for a in authors
-            else
-                writeln('Written by ' + author.apply(@authors[0]))
-            writeln()
-        writeln(@license.title)
-        writeln(" #{@license.href}")
-        writeln()
+    Written by Atif Aziz, http://www.raboof.com/
+
+    Creative Commons Attribution-ShareAlike 3.0 Unported License.
+     http://creativecommons.org/licenses/by-sa/3.0/"""
+
+[stdin, stdout, stderr]  = [WScript.StdIn, WScript.StdOut, WScript.StdErr]
 
 writeln = (s, w = stdout) -> w.WriteLine(s)
 write   = (s, w = stdout) -> w.Write(s)
@@ -74,7 +58,7 @@ getFileNameFromURL = (url, defaultFileName) ->
 
 main = (args) ->
     logo = args.isFlagged('logo')
-    About.write((s) -> writeln(s, stderr)) if logo
+    writeln(about, stderr) if logo
 
     if args.unnamed.length is 0
         return if logo
