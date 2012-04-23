@@ -199,7 +199,7 @@ main = function(args) {
   outputDirectory = args.getNamed('od') || '';
   outputPath = outputDirectory.length > 0 ? Path.combine(outputDirectory, outputFileName) : outputFileName;
   if (http.status !== 200) {
-    throw new Exception(httpStatus);
+    throw new Error(httpStatus);
   }
   if (useStandardOutput) {
     return write(http.responseText);
