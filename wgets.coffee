@@ -110,13 +110,14 @@ main = (args) ->
         write(" [#{contentLength} byte(s)]") if contentLength >= 0
         writeln('.')
 
-try
-    wshargs = WScript.Arguments
-    args = (wshargs.item(i) for i in [0...wshargs.length])
-    args.unnamed = (wshargs.Unnamed.Item(i) for i in [0...wshargs.Unnamed.Count])
-    args.getNamed  = (name) -> WScript.Arguments.Named.Item(name)
-    args.isFlagged = (name) -> WScript.Arguments.Named.Exists(name)
-    main(args)
-catch e
-    writeln (if not e.message then e.toString() else e.message), stderr
-    WScript.Quit(-1)
+do ->
+    try
+        wshargs = WScript.Arguments
+        args = (wshargs.item(i) for i in [0...wshargs.length])
+        args.unnamed = (wshargs.Unnamed.Item(i) for i in [0...wshargs.Unnamed.Count])
+        args.getNamed  = (name) -> WScript.Arguments.Named.Item(name)
+        args.isFlagged = (name) -> WScript.Arguments.Named.Exists(name)
+        main(args)
+    catch e
+        writeln (if not e.message then e.toString() else e.message), stderr
+        WScript.Quit(-1)
