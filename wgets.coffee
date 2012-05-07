@@ -112,7 +112,7 @@ main = (args) ->
 
 try
     wshargs = WScript.Arguments
-    args = (wsharg for wsharg in wshargs)
+    args = (wshargs.item(i) for i in [0...wshargs.length])
     args.unnamed = (wshargs.Unnamed.Item(i) for i in [0...wshargs.Unnamed.Count])
     args.getNamed  = (name) -> WScript.Arguments.Named.Item(name)
     args.isFlagged = (name) -> WScript.Arguments.Named.Exists(name)
