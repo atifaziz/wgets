@@ -1,5 +1,5 @@
 about = '''
-    WGETS 1.2.1 - A non-interactive web retriever script.
+    WGETS 1.2.2 - A non-interactive web retriever script.
     Copyright (c) Atif Aziz. All rights reserved.
 
     Written by Atif Aziz, http://www.raboof.com/
@@ -44,7 +44,7 @@ HTTP =
 String::trim = -> @replace(/^\s+|\s+$/g, '')
 
 String::clipLeft = (width, decoration = '...') ->
-    if @length <= width then @ else decoration + @[-width til]
+    if @length <= width then @ else decoration + @.slice -width
 
 class ProgramArgumentError extends Error
     (@message = 'Error with program argument.') ->
