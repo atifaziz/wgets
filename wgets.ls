@@ -31,18 +31,6 @@ Path =
         sb.push if (path2.indexOf '\\') is 0 then path2.substring 1 else path2
         sb.join ''
 
-HTTP =
-    getResponseHeaders : (http) ->
-        headersText = http.getAllResponseHeaders!
-        parser = /^([^\:\r]+)\:\s*(.+)$/gm
-        headers = {}
-        while mtch = parser.exec headersText
-            [name, value] = [mtch[1].trim!.toLowerCase!, mtch[2].trim!]
-            headers[name] = value
-        headers
-
-String::trim = -> @replace(/^\s+|\s+$/g, '')
-
 String::clipLeft = (width, decoration = '...') ->
     if @length <= width then @ else decoration + @.slice -width
 
