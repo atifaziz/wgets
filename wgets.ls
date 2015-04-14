@@ -28,7 +28,7 @@ Path =
         sb = []
         sb.push path1
         sb.push '\\' if '\\' isnt path1.slice -1
-        sb.push if (path2.indexOf '\\') is 0 then path2.substring(1) else path2
+        sb.push if (path2.indexOf '\\') is 0 then path2.substring 1 else path2
         sb.join ''
 
 HTTP =
@@ -58,7 +58,7 @@ getFileNameFromURL = (url, defaultFileName) ->
     if result.length > 0 then result else defaultFileName
 
 main = (args) !->
-    logo = args.isFlagged 'logo'
+    logo = args.isFlagged \logo
     writeln about, stderr if logo
 
     if args.unnamed.length is 0
@@ -68,20 +68,20 @@ main = (args) !->
     url = args.unnamed[0]
 
     useStandardOutput = false
-    httpStatusOnly    = args.isFlagged 'status'
-    httpHeadersOnly   = args.isFlagged 'headers'
+    httpStatusOnly    = args.isFlagged \status
+    httpHeadersOnly   = args.isFlagged \headers
     dontOutputEntity  = httpStatusOnly or httpHeadersOnly
 
     if not dontOutputEntity
         if args.unnamed.length > 1
             outputFileName = args.unnamed[1]
-            useStandardOutput = outputFileName is '-'
+            useStandardOutput = outputFileName is \-
         else
             outputFileName = getFileNameFromURL url, ''
             throw new Error 'Unable to guess the output file name from the URL.' if outputFileName.length is 0
 
-    http = new ActiveXObject 'Microsoft.XMLHTTP'
-    method = if dontOutputEntity then 'HEAD' else 'GET'
+    http = new ActiveXObject \Microsoft.XMLHTTP
+    method = if dontOutputEntity then \HEAD else \GET
     http.open method, url, false
     http.send!
 
@@ -92,9 +92,9 @@ main = (args) !->
 
     return if dontOutputEntity
 
-    contentLength = http.getResponseHeader 'Content-Length' |> String |> parseInt
+    contentLength = http.getResponseHeader \Content-Length |> String |> parseInt
 
-    outputDirectory = args.getNamed 'od' or ''
+    outputDirectory = args.getNamed \od or ''
     outputPath = if outputDirectory.length > 0 then Path.combine outputDirectory, outputFileName else outputFileName
 
     throw new Error httpStatus unless 200 <= http.status < 300
@@ -102,7 +102,7 @@ main = (args) !->
     if useStandardOutput
         write http.responseText
     else
-        new ActiveXObject 'ADODB.Stream'
+        new ActiveXObject \ADODB.Stream
             ..Type = ADO.StreamTypeEnum.adTypeBinary
             ..Open!
             ..Write http.responseBody
