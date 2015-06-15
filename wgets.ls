@@ -70,13 +70,11 @@ main = (args) !->
 
     proxy = args.getNamed \proxy or ''
 
-    if proxy.length > 0
-        http = new ActiveXObject \MSXML2.ServerXMLHTTP.6.0
-        const SXH_PROXY_SET_PROXY = 2
-        http.setProxy SXH_PROXY_SET_PROXY, proxy
-    else
-        http = new ActiveXObject \Microsoft.XMLHTTP
+    progid = if proxy.length > 0 or args.isFlagged \server then \MSXML2.ServerXMLHTTP.6.0 else \Microsoft.XMLHTTP
 
+    http = new ActiveXObject progid
+    const SXH_PROXY_SET_PROXY = 2
+    http.setProxy SXH_PROXY_SET_PROXY, proxy if proxy.length > 0
     method = if dontOutputEntity then \HEAD else \GET
     http.open method, url, false
     http.send!

@@ -68,7 +68,7 @@
     }
   };
   main = function(args){
-    var logo, url, useStandardOutput, httpStatusOnly, httpHeadersOnly, dontOutputEntity, outputFileName, proxy, http, SXH_PROXY_SET_PROXY, method, httpStatus, contentLength, outputDirectory, outputPath, ref$, x$;
+    var logo, url, useStandardOutput, httpStatusOnly, httpHeadersOnly, dontOutputEntity, outputFileName, proxy, progid, http, SXH_PROXY_SET_PROXY, method, httpStatus, contentLength, outputDirectory, outputPath, ref$, x$;
     logo = args.isFlagged('logo');
     if (logo) {
       writeln(about, stderr);
@@ -96,12 +96,11 @@
       }
     }
     proxy = args.getNamed('proxy') || '';
+    progid = proxy.length > 0 || args.isFlagged('server') ? 'MSXML2.ServerXMLHTTP.6.0' : 'Microsoft.XMLHTTP';
+    http = new ActiveXObject(progid);
+    SXH_PROXY_SET_PROXY = 2;
     if (proxy.length > 0) {
-      http = new ActiveXObject('MSXML2.ServerXMLHTTP.6.0');
-      SXH_PROXY_SET_PROXY = 2;
       http.setProxy(SXH_PROXY_SET_PROXY, proxy);
-    } else {
-      http = new ActiveXObject('Microsoft.XMLHTTP');
     }
     method = dontOutputEntity ? 'HEAD' : 'GET';
     http.open(method, url, false);
