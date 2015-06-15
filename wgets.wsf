@@ -9,6 +9,7 @@ Creative Commons Attribution-ShareAlike 3.0 Unported License.
   http://creativecommons.org/licenses/by-sa/3.0/
 </description>
         <named name="od" helpstring="Output directory." type="string" required="false" />
+        <named name="proxy" helpstring="Proxy server and port." type="string" required="false" />
         <named name="status" helpstring="Report status only." type="simple" required="false" />
         <named name="headers" helpstring="Report headers only." type="simple" required="false" />
         <named name="logo" helpstring="Information about this script." type="simple" required="false" />

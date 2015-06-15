@@ -1,5 +1,5 @@
 about = '''
-    WGETS 1.2.2 - A non-interactive web retriever script.
+    WGETS 1.3.0 BETA - A non-interactive web retriever script.
     Copyright (c) Atif Aziz. All rights reserved.
 
     Written by Atif Aziz, http://www.raboof.com/
@@ -68,7 +68,15 @@ main = (args) !->
             outputFileName = getFileNameFromURL url, ''
             throw new Error 'Unable to guess the output file name from the URL.' if outputFileName.length is 0
 
-    http = new ActiveXObject \Microsoft.XMLHTTP
+    proxy = args.getNamed \proxy or ''
+
+    if proxy.length > 0
+        http = new ActiveXObject \MSXML2.ServerXMLHTTP.6.0
+        const SXH_PROXY_SET_PROXY = 2
+        http.setProxy SXH_PROXY_SET_PROXY, proxy
+    else
+        http = new ActiveXObject \Microsoft.XMLHTTP
+
     method = if dontOutputEntity then \HEAD else \GET
     http.open method, url, false
     http.send!
