@@ -1,5 +1,5 @@
 about = '''
-    WGETS 1.3.0 BETA - A non-interactive web retriever script.
+    WGETS 1.3.0 - A non-interactive web retriever script.
     Copyright (c) Atif Aziz. All rights reserved.
 
     Written by Atif Aziz, http://www.raboof.com/
